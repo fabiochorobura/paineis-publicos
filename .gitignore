@@ -1,0 +1,27 @@
+# Ambientes e segredos locais
+.env*
+*.env
+*.env.*
+**/.env*
+**/*.env
+**/*.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+credentials*.json
+
+# Dependências, artefatos, caches e relatórios locais
+node_modules/
+dist/
+.cache/
+.tmp/
+__pycache__/
+*.pyc
+*.log
+*.tsbuildinfo
+.claude/
+.codex/
+.vscode/
+.DS_Store
+Thumbs.db

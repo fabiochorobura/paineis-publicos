@@ -1,0 +1,32 @@
+{
+  "name": "chorobura-eleicoes-tv",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host",
+    "tv": "vite build && vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "11.11.4",
+    "@emotion/styled": "11.11.5",
+    "@mui/material": "^5.16.6",
+    "@tabler/icons-react": "2.38.0",
+    "apexcharts": "3.48.0",
+    "react": "18.3.1",
+    "react-apexcharts": "1.4.1",
+    "react-dom": "18.3.1",
+    "uplot": "1.6.32"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "@vitejs/plugin-legacy": "8.2.3",
+    "@vitejs/plugin-react": "6.1.2",
+    "terser": "^5.36.0",
+    "typescript": "5.5.4",
+    "vite": "8.3.5"
+  }
+}

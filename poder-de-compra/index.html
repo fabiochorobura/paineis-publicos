@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Seu poder de compra — Chorobura Sistemas</title>
+  <link rel="stylesheet" href="./painel.css">
+  <style>
+    :root { --azul-principal:#075bc7; --azul-profundo:#071a2f; --texto-secundario:#52677e; }
+    body { margin:0; background:#edf3fa; font-family:Inter,"Segoe UI",system-ui,sans-serif; }
+    .assinatura { max-width:1440px; margin:20px auto; padding:0 18px; color:#52677e; }
+    .assinatura a { color:#075bc7; } main { padding:0 12px 28px; }
+  </style>
+</head>
+<body>
+  <p class="assinatura"><a href="https://chorobura.com.br/">Chorobura Sistemas</a> · Painel de dados públicos</p>
+  <main><div class="viz-root" id="painel">  <header class="head">
+    <div class="head-top">
+      <h1>Quanto o poder de compra caiu: preços, juros, energia, cesta, casa e carro</h1>
+      <p class="src-line">Ano a ano: 1940 até set/2026 · demais visões: Plano Real (1994) até set/2026 · Dieese, IBGE, Banco Central, Fipe e EPE (via Ipeadata)</p>
+    </div>
+    <div class="toolbar">
+      <div class="seg viewtabs">
+        <span class="btns" role="group" aria-label="Visão" id="viewBtns">
+          <button type="button" data-view="acum" aria-pressed="true">Efeito acumulado</button>
+          <button type="button" data-view="acess" aria-pressed="false">Casa, carro e cesta</button>
+          <button type="button" data-view="bars" aria-pressed="false">Ano a ano (barras)</button>
+        </span></div>
+      <div class="ctrls" id="ctrls">
+        <div class="seg" id="baseSeg"><span class="pill" id="pillTxt">Período: Plano Real, 1994 até set/2026</span></div>
+        <div class="seg" id="scaleSeg"><span id="scaleLbl">Escala</span>
+          <span class="btns" role="group" aria-label="Escala">
+            <button type="button" data-scale="log" aria-pressed="true">Logarítmica</button>
+            <button type="button" data-scale="linear" aria-pressed="false">Linear</button>
+          </span></div>
+        <button type="button" class="dl" id="dl">Baixar PNG</button>
+      </div>
+    </div>
+    <p class="hint" id="hint"></p>
+    <div class="legend" id="legend"></div>
+  </header>
+
+  <!-- VISÃO: EFEITO ACUMULADO -->
+  <div id="vAcum">
+    <p class="headline" id="headline"></p>
+    <div class="tiles" id="tiles"></div>
+    <div class="chwrap" id="acumWrap"><div id="acumSvg"></div><div class="tip"></div></div>
+    <details class="scen" id="wageBlock">
+      <summary><span>Salário mínimo em R$: o que ele foi × o esperado</span><span class="sum-hint">clique para abrir ou recolher</span></summary>
+      <p id="wageSub"></p>
+      <div class="chwrap" id="wageWrap"><div id="wageSvg"></div><div class="tip"></div></div>
+      <div class="scen2" id="scen"></div>
+    </details>
+    <p class="foot" id="acumNote"></p>
+  </div>
+
+  <!-- VISÃO: CASA, CARRO E CESTA -->
+  <div id="vAcess">
+    <div class="inputs">
+      <label>Tamanho do apartamento (m²) <input type="number" id="inArea" value="60" min="10" max="400" step="5"></label>
+      <span>Preço do m² em set/2026: <b>R$ 12.201</b> (Índice FipeZap, São Paulo)</span>
+    </div>
+    <div class="panels" id="panels"></div>
+    <p class="foot">Como ler: na <b>cesta</b> e na <b>casa</b>, quanto <b>maior</b> o número, <b>mais difícil</b> é comprar (“salários mínimos necessários” = preço ÷ salário mínimo vigente em dezembro de cada ano). A <b>casa</b> usa o preço real do m² em São Paulo (Índice FipeZap) vezes o tamanho que você digitar. O <b>carro</b> mostra o aumento acumulado do preço desde 2013 (preços reais de lista que consegui verificar) ao lado do aumento do salário mínimo no mesmo período; se a barra cinza passa da azul, o carro subiu mais que o salário.</p>
+  </div>
+
+  <!-- VISÃO: BARRAS -->
+  <div id="chartArea">
+    <div class="axhead"><span id="axL"></span><span id="axR"></span></div>
+    <div class="chartbox" id="chartbox">
+      <div class="flex">
+        <div id="axisL"></div>
+        <div class="scroller" id="scroller"><div id="plot"></div></div>
+        <div id="axisR"></div>
+      </div>
+      <div class="tip" id="tip"></div>
+    </div>
+    <p class="foot"><b>Atenção aos eixos:</b> o eixo esquerdo está em R$ e o direito em % (duas unidades diferentes), então compare o comportamento de cada cor ao longo dos anos, não a altura de uma barra contra a outra. A escala logarítmica <b>encolhe</b> os números grandes (por isso esta visão engana: a inflação parece pequena); para ver o efeito real, use “Efeito acumulado”. Barras para baixo são valores negativos.</p>
+  </div>
+
+
+  <div class="foot"><b>Fontes e cálculos.</b>
+    <ul class="src">
+      <li><b>Salário mínimo:</b> Dieese, elaboração de Ilmar Ferreira Silva, publicada pela CNN Brasil em 1/5/2023 (média anual em São Paulo, R$ de março de 2023). O salário mínimo nominal (valor vigente em dezembro) vem do Ministério do Trabalho via Ipeadata. De 2024 em diante, o salário mínimo real foi estimado com o mesmo método (valor vigente ÷ IPCA, em R$ de março de 2023): ele reproduz o Dieese em 2019–2023 com diferença máxima de 0,55%.</li>
+      <li><b>Salário médio:</b> rendimento médio real habitual do trabalho principal (PNAD Contínua/IBGE, via Ipeadata), em R$ de março de 2023 pelo IPCA; contínuo só desde 2012.</li>
+      <li><b>IPC-Fipe (SP):</b> dez/dez, via Ipeadata. <b>IPCA (IBGE):</b> taxas mensais do Banco Central (série 433) compostas de jan a dez.</li>
+      <li><b>Cesta básica:</b> custo no município de São Paulo (Dieese/PNCBA, via Ipeadata), variação dez/dez. “% do salário mínimo” = custo da cesta em dezembro ÷ salário mínimo de dezembro (em 2026, até set).</li>
+      <li><b>Energia elétrica:</b> variação da tarifa média por MWh (EPE/BEN, via Ipeadata), dez/dez (em 2026, só até jun/2026; antes de jul/1994 a série mistura moedas, por isso começa em 1995); não é o item “energia elétrica residencial” do IPCA.</li>
+      <li><b>Taxa Selic:</b> Over/Selic acumulada no mês (Banco Central, via Ipeadata), composta no ano. No acumulado, mostra quanto R$ 100 viram quando corrigidos pela Selic (aplicação ou dívida).</li>
+      <li><b>Poder de compra do real:</b> 100 ÷ (índice de preços IPCA acumulado desde o ano-base).</li>
+      <li><b>Casa:</b> preço do m² em São Paulo (anúncios de venda) do Índice FipeZap/Fipe: R$ 10.703 em jan/2024 no informe da Fipe, levado para os outros anos pela variação do índice (Ipeadata, jun/2012 = 100). O painel assume um apartamento do tamanho que você digitar.</li>
+      <li><b>Carro:</b> preços de lista da versão de entrada do carro mais barato em cada ano, lidos nas reportagens indicadas na tabela da visão “Casa, carro e cesta” (Bright Consulting via A Crítica, CNN Brasil, Motor Agora e FGV/Ibre via Exame). O gráfico mostra o aumento acumulado do preço desde 2013 e, ao lado, o do salário mínimo vigente na época; “descontada a inflação” divide os dois pelo IPCA acumulado de dez/2013 até o fim do ano de cada preço (aproximação: o mês exato de cada preço varia).</li>
+      <li><b>Cobertura no “Ano a ano” (1940–2026):</b> o salário mínimo só existe desde 1940, por isso essa é a data mais antiga. IPC-Fipe desde 1940; IPCA desde 1980; cesta básica desde 1960 (sem dado em 1964–1965); Selic desde 1974 (sem 1986); energia desde 1995; salário médio desde 2012; poder de compra desde 1994. Série sem dado em um ano fica sem barra.</li>
+      <li><b>Período e último ano:</b> as demais visões vão do Plano Real (1994) até o mês mais recente disponível. 2026 (marcado com *) é parcial: do início do ano até set/2026. Em 1994, as taxas anuais incluem o primeiro semestre, antes do Real (julho).</li>
+    </ul>
+  </div>
+</div></main>
+  <script type="module">import { iniciarPainel } from './painel.js'; iniciarPainel();</script>
+</body>
+</html>
